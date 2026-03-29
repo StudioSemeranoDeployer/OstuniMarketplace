@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ostuni Marketplace | P2P & Web3</title>
     
+    <!-- BRANDING ASSETS -->
+    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/logo.png">
+
     <!-- Scripts -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
@@ -31,7 +36,7 @@
         body { background-color: #FDFBF7; color: #283618; overflow-x: hidden; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .bg-glass { background: rgba(253, 251, 247, 0.98); backdrop-filter: blur(20px); }
-        .tail-shadow { box-shadow: -20px 0 80px rgba(40, 54, 24, 0.15); }
+        .tail-shadow { box-shadow: -30px 0 80px rgba(40, 54, 24, 0.15); }
         .skeleton { background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
         @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
         .category-badge { font-size: 7px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; }
@@ -49,21 +54,22 @@
     <nav class="sticky top-0 z-[130] bg-glass border-b border-ulivo/5 py-3">
         <div class="max-w-7xl mx-auto px-4 md:px-6 flex justify-between items-center">
             <div class="cursor-pointer flex items-center space-x-2" @click="resetView()">
-                <div class="w-10 h-10 md:w-12 md:h-12 bg-ulivo rounded-xl flex items-center justify-center text-panna font-serif text-xl md:text-2xl shadow-xl">O</div>
-                <div class="leading-none">
+                <!-- LOGO DA ASSETS -->
+                <img src="./assets/logo.png" alt="Ostuni Marketplace Logo" class="w-10 h-10 md:w-12 md:h-12 rounded-xl shadow-xl object-cover border border-ulivo/10 hover:scale-105 transition-transform" onerror="this.src='https://ui-avatars.com/api/?name=O&background=556B2F&color=FDFBF7'">
+                <div class="leading-none ml-2">
                     <h1 class="font-serif text-lg md:text-2xl font-bold italic">Ostuni Market</h1>
                     <p class="text-[8px] uppercase tracking-[0.4em] text-ulivo/40 font-black">Città Bianca • P2P</p>
                 </div>
             </div>
             
             <div class="flex items-center space-x-2 md:space-x-4">
-                <button @click="openCreate()" class="bg-ulivo text-panna px-4 py-2.5 md:px-6 md:py-3 rounded-2xl font-bold shadow-lg hover:bg-ulivoDark transition-all flex items-center gap-2">
-                    <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                <button @click="openCreate()" class="bg-ulivo text-panna px-4 py-2.5 md:px-6 md:py-3 rounded-2xl font-bold shadow-lg hover:bg-ulivoDark transition-all flex items-center gap-2 group">
+                    <i data-lucide="plus-circle" class="w-4 h-4 group-hover:rotate-90 transition-transform"></i>
                     <span class="text-[9px] md:text-[10px] uppercase tracking-widest">Vendi</span>
                 </button>
                 <button @click="user ? (showProfile = true) : (showAuthModal = true)" class="p-2.5 md:p-3 bg-white border border-ulivo/10 rounded-2xl text-ulivo hover:shadow-md transition relative">
                     <i :data-lucide="user ? 'user' : 'user-plus'" class="w-5 h-5 md:w-6 md:h-6"></i>
-                    <template x-if="user"><div class="absolute -top-1 -right-1 w-4 h-4 bg-oro rounded-full border-2 border-white text-[8px] flex items-center justify-center text-ulivoDark font-black shadow-sm">!</div></template>
+                    <template x-if="user"><div class="absolute -top-1 -right-1 w-4 h-4 bg-oro rounded-full border-2 border-white text-[8px] flex items-center justify-center text-ulivoDark font-black shadow-sm animate-bounce">!</div></template>
                 </button>
             </div>
         </div>
@@ -98,15 +104,15 @@
                     <div class="absolute top-4 left-4 z-20 flex flex-col gap-2">
                         <span class="bg-ulivoDark/80 backdrop-blur-md text-panna px-3 py-1 rounded-full category-badge" x-text="item.category"></span>
                         <template x-if="item.isSponsored">
-                            <span class="bg-oro text-ulivoDark px-3 py-1 rounded-full category-badge shadow-md animate-pulse">Sponsored</span>
+                            <span class="bg-oro text-ulivoDark px-3 py-1 rounded-full category-badge shadow-md animate-pulse border border-white/20">Sponsored</span>
                         </template>
                     </div>
 
                     <div class="relative aspect-square overflow-hidden bg-ulivo/5">
-                        <img :src="item.images[0]" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000" onerror="this.src='https://placehold.co/400x400/FDFBF7/556B2F?text=Ostuni'">
+                        <img :src="item.images[0]" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000" onerror="this.src='./assets/placeholder.jpg'">
                         <div class="absolute top-4 right-4 bg-panna/95 backdrop-blur px-4 py-2 rounded-xl text-xs font-black shadow-lg" x-text="'€' + item.price"></div>
                         <template x-if="canManage(item)">
-                            <div class="absolute bottom-4 left-4 bg-oro text-ulivoDark px-2 py-1 rounded-lg text-[8px] font-black uppercase shadow-lg z-10">Il Tuo Annuncio</div>
+                            <div class="absolute bottom-4 left-4 bg-oro text-ulivoDark px-2 py-1 rounded-lg text-[8px] font-black uppercase shadow-lg z-10">Gestisci</div>
                         </template>
                     </div>
                     <div class="p-6 text-center flex-1">
@@ -139,6 +145,8 @@
     <div x-show="showAuthModal" x-cloak class="fixed inset-0 z-[400] flex items-center justify-center p-4">
         <div @click="showAuthModal = false" class="absolute inset-0 bg-ulivoDark/60 backdrop-blur-md"></div>
         <div class="relative bg-panna w-full max-w-md rounded-[3rem] shadow-2xl p-10 text-center animate-card">
+            <!-- LOGO NEL LOGIN -->
+            <img src="./assets/logo.png" class="w-16 h-16 mx-auto mb-4 rounded-2xl shadow-lg" onerror="this.style.display='none'">
             <h3 class="font-serif text-3xl italic mb-8">Accesso Marketplace</h3>
             <div class="space-y-4">
                 <button @click="login('google')" class="w-full bg-white border p-5 rounded-2xl font-bold flex items-center justify-center gap-3 shadow-sm hover:shadow-md transition">
@@ -166,26 +174,27 @@
              class="relative w-full max-w-xl bg-panna h-full shadow-2xl flex flex-col tail-shadow overflow-y-auto no-scrollbar">
             
             <div class="p-6 md:p-8 flex justify-between items-center bg-white sticky top-0 z-10 border-b border-ulivo/5">
-                <button @click="selectedItem = null; showProfile = false" class="p-3 bg-panna rounded-2xl transition hover:bg-ulivo/5"><i data-lucide="arrow-left" class="w-6 h-6"></i></button>
+                <button @click="selectedItem = null; showProfile = false" class="p-3 bg-panna rounded-2xl hover:bg-ulivo/5 transition"><i data-lucide="arrow-left" class="w-6 h-6"></i></button>
                 <p class="font-serif italic text-ulivoDark text-xl" x-text="showProfile ? 'Il Tuo Profilo' : selectedItem?.category"></p>
                 <div class="flex gap-2">
                     <template x-if="canManage(selectedItem) && !showProfile">
                         <div class="flex gap-2">
-                            <button @click="editItem(selectedItem)" class="p-3 bg-oro/10 text-oro rounded-2xl"><i data-lucide="edit-3"></i></button>
-                            <button @click="deleteItem(selectedItem.id)" class="p-3 bg-red-50 text-red-500 rounded-2xl"><i data-lucide="trash-2"></i></button>
+                            <button @click="editItem(selectedItem)" class="p-3 bg-oro/10 text-oro rounded-2xl transition"><i data-lucide="edit-3"></i></button>
+                            <button @click="deleteItem(selectedItem.id)" class="p-3 bg-red-50 text-red-500 rounded-2xl transition"><i data-lucide="trash-2"></i></button>
                         </div>
                     </template>
-                    <button x-show="showProfile" @click="logout()" class="p-3 bg-red-50 text-red-500 rounded-2xl"><i data-lucide="log-out"></i></button>
+                    <button x-show="showProfile" @click="logout()" class="p-3 bg-red-50 text-red-500 rounded-2xl transition hover:rotate-6"><i data-lucide="log-out"></i></button>
                     <div x-show="!showProfile && !canManage(selectedItem)" class="w-12"></div>
                 </div>
             </div>
 
-            <!-- Dashboard Utente -->
+            <!-- DASHBOARD UTENTE -->
             <template x-if="showProfile">
                 <div class="p-8 md:p-12 space-y-8 animate-card">
-                    <div class="bg-white p-10 rounded-[3.5rem] border border-ulivo/10 text-center shadow-sm">
-                        <div class="w-24 h-24 bg-ulivo/5 rounded-full mx-auto mb-6 flex items-center justify-center border border-ulivo/10">
-                            <i data-lucide="user" class="w-12 h-12 text-ulivo"></i>
+                    <div class="bg-white p-10 rounded-[3.5rem] border border-ulivo/10 text-center shadow-sm relative overflow-hidden">
+                        <div class="w-24 h-24 bg-ulivo/5 rounded-full mx-auto mb-6 flex items-center justify-center border border-ulivo/10 overflow-hidden">
+                            <img src="./assets/logo.png" class="w-full h-full object-cover opacity-20 absolute scale-150">
+                            <i data-lucide="user" class="w-12 h-12 text-ulivo relative z-10"></i>
                         </div>
                         <h4 class="text-xl font-bold text-ulivoDark truncate" x-text="user?.email || 'Membro Verificato'"></h4>
                         <p class="text-[10px] font-black uppercase text-ulivo/40 tracking-[0.2em] mt-2">Ostuni Community Member</p>
@@ -206,7 +215,7 @@
                 </div>
             </template>
 
-            <!-- Dettaglio Annuncio -->
+            <!-- DETTAGLIO ANNUNCIO -->
             <template x-if="selectedItem && !showProfile">
                 <div class="p-8 md:p-10 animate-card">
                     <div class="relative rounded-[3rem] overflow-hidden shadow-2xl mb-10 bg-ulivo/5 border border-ulivo/5 aspect-square md:aspect-video">
@@ -216,7 +225,7 @@
                         <h2 class="font-serif text-4xl md:text-5xl italic text-ulivoDark leading-tight" x-text="selectedItem?.title"></h2>
                         <div class="text-right">
                             <p class="text-3xl md:text-4xl font-bold text-oro" x-text="'€' + selectedItem?.price"></p>
-                            <p class="text-[9px] font-black text-ulivo/20 uppercase">Proposta P2P</p>
+                            <p class="text-[9px] font-black text-ulivo/20 uppercase tracking-tighter">Proposta P2P</p>
                         </div>
                     </div>
                     <div class="bg-white p-8 rounded-[3rem] border border-ulivo/5 shadow-sm mb-12 text-lg leading-relaxed text-ulivoDark/80 font-light" x-text="selectedItem?.description"></div>
@@ -266,7 +275,6 @@
     <!-- LOGIC -->
     <script>
         const { createClient } = supabase;
-        // Iniezione GitHub Actions Safe
         const URL_DB = __SUPABASE_URL_INJECT__;
         const KEY_DB = __SUPABASE_KEY_INJECT__;
 
@@ -274,7 +282,7 @@
         try {
             _supabase = createClient(URL_DB, KEY_DB);
         } catch (e) {
-            console.warn("Supabase non configurato, modalità Demo attiva.");
+            console.warn("Supabase non configurato.");
         }
 
         document.addEventListener('alpine:init', () => {
@@ -307,20 +315,18 @@
                     { id: 'professioni', label: 'Professionisti', icon: 'award' }
                 ],
 
-                // 1 ANNUNCIO DEMO PER TIPO (ASSETS LOCALI)
                 demoItems: [
                     { id: 'd1', title: 'Olio Evo Valle d\'Itria', price: 15, category: 'vendo', location: 'Ostuni', phone: '39333000000', description: 'Olio estratto a freddo, produzione locale 2024.', images: ['./assets/demo-olio.jpg'], rating_up: 45 },
                     { id: 'd2', title: 'Cerco Graziella Vintage', price: 100, category: 'compro', location: 'Villanova', phone: '39333000000', description: 'Cerco bicicletta originale anni 70.', images: ['./assets/demo-graziella.jpg'], rating_up: 5 },
-                    { id: 'd3', title: 'Trullo Vista Mare', price: 1200, category: 'immobiliare', location: 'Contrada Paradiso', phone: '39333000000', description: 'Affitto stagionale trullo restaurato con piscina.', images: ['./assets/demo-trullo.jpg'], rating_up: 128 },
-                    { id: 'd4', title: 'Trasporto Bagagli Centro', price: 20, category: 'servizi', location: 'Ostuni Storica', phone: '39333000000', description: 'Aiuto facchinaggio per turisti nei vicoli.', images: ['./assets/demo-taxi.jpg'], rating_up: 12 },
-                    { id: 'd5', title: 'Vespa 50 Special Panna', price: 3400, category: 'motori', location: 'Piazza Libertà', phone: '39333000000', description: 'Restauro professionale 2023.', images: ['./assets/demo-vespa.jpg'], rating_up: 33 },
-                    { id: 'd6', title: 'Spesa a Domicilio', price: 10, category: 'aiuto', location: 'Ostuni', phone: '39333000000', description: 'Faccio la spesa per chi non può uscire.', images: ['./assets/demo-spesa.jpg'], rating_up: 89 },
-                    { id: 'd7', title: 'Lezioni di Orecchiette', price: 50, category: 'professioni', location: 'Trullo Didattico', phone: '39333000000', description: 'Impara l\'arte pugliese in 3 ore.', images: ['./assets/demo-pasta.jpg'], rating_up: 210 }
+                    { id: 'd3', title: 'Trullo Vista Mare', price: 1200, category: 'immobiliare', location: 'Contrada Paradiso', phone: '39333000000', description: 'Affitto stagionale trullo restaurato.', images: ['./assets/demo-trullo.jpg'], rating_up: 128 },
+                    { id: 'd4', title: 'Trasporto Bagagli', price: 20, category: 'servizi', location: 'Ostuni Storica', phone: '39333000000', description: 'Aiuto facchinaggio.', images: ['./assets/demo-taxi.jpg'], rating_up: 12 },
+                    { id: 'd5', title: 'Vespa 50 Special', price: 3400, category: 'motori', location: 'Piazza Libertà', phone: '39333000000', description: 'Restauro professionale 2023.', images: ['./assets/demo-vespa.jpg'], rating_up: 33 },
+                    { id: 'd6', title: 'Spesa a Domicilio', price: 10, category: 'aiuto', location: 'Ostuni', phone: '39333000000', description: 'Disponibile per commissioni.', images: ['./assets/demo-spesa.jpg'], rating_up: 89 },
+                    { id: 'd7', title: 'Lezioni di Orecchiette', price: 50, category: 'professioni', location: 'Masseria', phone: '39333000000', description: 'Impara l\'arte pugliese.', images: ['./assets/demo-pasta.jpg'], rating_up: 210 }
                 ],
 
-                // SPONSORIZZATI SLOTS
                 sponsoredAds: {
-                    tutti: { id: 's0', isSponsored: true, title: 'Masseria Forno Realty', price: 1200000, category: 'immobiliare', location: 'Contrada Forno', description: 'Investi nella storia ostunese.', images: ['./assets/sp-villa.jpg'], phone: '39333000000' }
+                    tutti: { id: 's0', isSponsored: true, title: 'Masseria Forno Realty', price: 1200000, category: 'immobiliare', location: 'Ostuni', description: 'Investi nella storia.', images: ['./assets/sp-villa.jpg'], phone: '39333000000' }
                 },
 
                 async init() {
@@ -330,40 +336,28 @@
                         _supabase.auth.onAuthStateChange((_, session) => { this.user = session?.user || null; });
                     }
                     await this.fetchItems();
-                    this.$nextTick(() => lucide.createIcons());
                 },
 
                 async fetchItems() {
                     this.loading = true;
                     try {
                         let query = _supabase.from('listings').select('*').order('created_at', { ascending: false });
-                        
                         if (this.filterByOwner) {
                             if (this.user) query = query.eq('user_id', this.user.id);
                             else query = query.eq('guest_id', this.guestId);
                         } else if (this.selectedCategory !== 'tutti') {
                             query = query.eq('category', this.selectedCategory);
                         }
-
                         const { data } = await query;
                         let results = data || [];
-
-                        // Mix con Demo per categoria
-                        const filteredDemos = this.selectedCategory === 'tutti' 
-                            ? this.demoItems 
-                            : this.demoItems.filter(d => d.category === this.selectedCategory);
-                        
+                        const filteredDemos = this.selectedCategory === 'tutti' ? this.demoItems : this.demoItems.filter(d => d.category === this.selectedCategory);
                         results = [...results, ...filteredDemos];
-
-                        // Slot Zero Sponsor
                         if (!this.filterByOwner) {
                             const sponsor = this.sponsoredAds[this.selectedCategory] || this.sponsoredAds['tutti'];
                             if (sponsor) results.unshift(sponsor);
                         }
                         this.items = results;
-                    } catch (e) { 
-                        this.items = this.demoItems; 
-                    }
+                    } catch (e) { this.items = this.demoItems; }
                     this.loading = false;
                     this.$nextTick(() => lucide.createIcons());
                 },
@@ -400,7 +394,6 @@
                 async saveListing() {
                     if (!this.newPost.title || !this.newPost.price || !this.newPost.phone) return this.showToast("Dati mancanti", "error");
                     this.isLoading = true;
-                    
                     try {
                         if (this.editingId) {
                             await _supabase.from('listings').update(this.newPost).eq('id', this.editingId);
@@ -412,10 +405,7 @@
                             this.showToast("Pubblicato!");
                         }
                     } catch (err) { this.showToast("Errore DB", "error"); }
-                    
-                    this.isLoading = false;
-                    this.isCreating = false;
-                    await this.fetchItems();
+                    this.isLoading = false; this.isCreating = false; await this.fetchItems();
                 },
 
                 canManage(item) {
@@ -426,9 +416,7 @@
                 async deleteItem(id) {
                     if (!confirm("Sei sicuro?")) return;
                     await _supabase.from('listings').delete().eq('id', id);
-                    this.selectedItem = null;
-                    this.fetchItems();
-                    this.showToast("Eliminato.");
+                    this.selectedItem = null; await this.fetchItems(); this.showToast("Rimosso.");
                 },
 
                 filterMyAds() { this.filterByOwner = true; this.selectedCategory = 'tutti'; this.fetchItems(); },
