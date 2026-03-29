@@ -159,7 +159,11 @@
 
     <script>
         const { createClient } = supabase;
-        const _supabase = createClient('https://unatkiuryxbibdsmbimd.supabase.co', 'TUA_ANON_KEY');
+        
+        const SUPABASE_URL = '__SUPABASE_URL__';
+        const SUPABASE_KEY = '__SUPABASE_KEY__';
+
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         document.addEventListener('alpine:init', () => {
             Alpine.data('ostuniApp', () => ({
