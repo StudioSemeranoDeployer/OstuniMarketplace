@@ -314,15 +314,21 @@
                 },
 
                 async login() {
-                    const { error } = await _supabase.auth.signInWithOAuth({
-                        provider: 'google',
-                        options: {
-                            // URL esatto per il redirect su GitHub Pages
-                            redirectTo: 'https://studiosemerano.github.io/OstuniMarketplace/'
-                        }
-                    });
-                    if (error) this.showToast("Errore Login: " + error.message, "error");
-                },
+    // Rileviamo automaticamente l'URL corrente per non sbagliare il redirect
+    const currentUrl = window.location.origin + window.location.pathname;
+    console.log("Redirecting to:", currentUrl);
+
+    const { error } = await _supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+            redirectTo: currentUrl
+        }
+    });
+    
+    if (error) {
+        this.showToast("Errore Login: " + error.message, "error");
+    }
+}
 
                 async logout() {
                     await _supabase.auth.signOut();
