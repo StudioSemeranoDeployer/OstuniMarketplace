@@ -1,0 +1,39 @@
+name: Deploy Ostuni Marketplace
+
+on:
+  push:
+    branches:
+      - main # Il tuo branch di lavoro
+
+permissions:
+  contents: read
+  pages: write      # Permesso per pubblicare su Pages
+  id-token: write   # Permesso per l'autenticazione sicura
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Iniezione Chiavi Supabase
+        run: |
+          # Sostituzione dei segnaposto con i Secrets
+          sed -i "s#__SUPABASE_URL__#${{ secrets.SUPABASE_URL }}#g" index.html
+          sed -i "s#__SUPABASE_KEY__#${{ secrets.SUPABASE_KEY }}#g" index.html
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Caricamento Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.' # Carica tutta la cartella corrente
+
+      - name: Deploy su GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
