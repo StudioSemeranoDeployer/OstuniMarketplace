@@ -1,0 +1,28 @@
+name: Deploy Ostuni Marketplace
+
+on:
+  push:
+    branches:
+      - main  # Esegue il deploy ogni volta che fai "push" sul ramo main
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del codice
+        uses: actions/checkout@v3
+
+      - name: Iniezione delle chiavi Supabase
+        run: |
+          # Sostituisce i segnaposto nel file index.html con i valori reali dei Secrets
+          sed -i "s|__SUPABASE_URL__|${{ secrets.SUPABASE_URL }}|g" index.html
+          sed -i "s|__SUPABASE_KEY__|${{ secrets.SUPABASE_KEY }}|g" index.html
+
+      - name: Deploy su GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: .        # La cartella da pubblicare (tutta la root)
+          branch: gh-pages # Il ramo dove GitHub Pages caricherà il sito pronto
