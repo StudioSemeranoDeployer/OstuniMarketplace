@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ostuni Marketplace | La Città Bianca</title>
+    <title>Ostuni Marketplace | P2P & Web3</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
@@ -27,7 +27,7 @@
         [x-cloak] { display: none !important; }
         body { background-color: #FDFBF7; color: #283618; overflow-x: hidden; font-family: 'Outfit', sans-serif; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        .bg-glass { background: rgba(253, 251, 247, 0.95); backdrop-filter: blur(20px); }
+        .bg-glass { background: rgba(253, 251, 247, 0.98); backdrop-filter: blur(20px); }
         .tail-shadow { box-shadow: -30px 0 80px rgba(40, 54, 24, 0.15); }
         .skeleton { background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
         @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
@@ -37,43 +37,43 @@
 </head>
 <body class="antialiased">
 
-    <!-- TOAST -->
-    <div x-show="toast.show" x-cloak x-transition class="fixed top-6 right-6 z-[300] bg-ulivoDark text-panna px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 border border-white/10 font-bold text-xs uppercase tracking-widest">
+    <!-- TOAST NOTIFICATIONS -->
+    <div x-show="toast.show" x-cloak x-transition class="fixed top-4 right-4 z-[400] bg-ulivoDark text-panna px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 border border-white/10 font-bold text-xs uppercase tracking-widest">
         <div :class="toast.type === 'error' ? 'bg-red-500' : 'bg-oro'" class="p-1 rounded-full"><i data-lucide="check" class="w-4 h-4 text-ulivoDark"></i></div>
         <span x-text="toast.message"></span>
     </div>
 
-    <!-- NAVBAR -->
-    <nav class="sticky top-0 z-[100] bg-glass border-b border-ulivo/5 py-4">
-        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
-            <div class="cursor-pointer flex items-center space-x-3" @click="resetView()">
-                <div class="w-12 h-12 bg-ulivo rounded-2xl flex items-center justify-center text-panna font-serif text-2xl shadow-xl">O</div>
-                <div class="hidden sm:block leading-none">
-                    <h1 class="font-serif text-2xl font-bold italic">Ostuni Marketplace</h1>
-                    <p class="text-[9px] uppercase tracking-[0.4em] text-ulivo/40 font-black">Città Bianca • P2P</p>
+    <!-- NAVBAR (Sticky Top 0) -->
+    <nav class="sticky top-0 z-[110] bg-glass border-b border-ulivo/5 py-3 md:py-4">
+        <div class="max-w-7xl mx-auto px-4 md:px-6 flex justify-between items-center">
+            <div class="cursor-pointer flex items-center space-x-2 md:space-x-3" @click="resetView()">
+                <div class="w-10 h-10 md:w-12 md:h-12 bg-ulivo rounded-2xl flex items-center justify-center text-panna font-serif text-xl md:text-2xl shadow-xl hover:rotate-6 transition-transform">O</div>
+                <div class="leading-none">
+                    <h1 class="font-serif text-lg md:text-2xl font-bold italic">Ostuni Marketplace</h1>
+                    <p class="text-[8px] md:text-[9px] uppercase tracking-[0.4em] text-ulivo/40 font-black">Città Bianca • P2P & Web3</p>
                 </div>
             </div>
             
-            <div class="flex items-center space-x-3">
-                <button @click="user ? (isCreating = true) : login()" class="bg-ulivo text-panna px-6 py-3 rounded-2xl font-bold shadow-lg hover:bg-ulivoDark transition-all flex items-center gap-2 group">
-                    <i data-lucide="plus-circle" class="w-5 h-5 group-hover:scale-110 transition"></i>
-                    <span class="text-[10px] uppercase tracking-widest" x-text="user ? 'Vendi' : 'Accedi'"></span>
+            <div class="flex items-center space-x-2 md:space-x-4">
+                <button @click="user ? (isCreating = true) : (showAuthModal = true)" class="bg-ulivo text-panna px-4 py-2.5 md:px-6 md:py-3 rounded-2xl font-bold shadow-lg hover:bg-ulivoDark transition-all flex items-center gap-2 group">
+                    <i data-lucide="plus-circle" class="w-4 h-4 md:w-5 md:h-5"></i>
+                    <span class="text-[9px] md:text-[10px] uppercase tracking-widest" x-text="user ? 'Vendi' : 'Accedi'"></span>
                 </button>
-                <button @click="user ? logout() : login()" class="p-3 bg-white border border-ulivo/10 rounded-2xl text-ulivo hover:shadow-md transition">
-                    <i :data-lucide="user ? 'log-out' : 'user'" class="w-6 h-6"></i>
+                <button @click="user ? (showProfile = true) : (showAuthModal = true)" class="p-2.5 md:p-3 bg-white border border-ulivo/10 rounded-2xl text-ulivo hover:shadow-md transition">
+                    <i :data-lucide="user ? 'layout-dashboard' : 'user'" class="w-5 h-5 md:w-6 md:h-6"></i>
                 </button>
             </div>
         </div>
     </nav>
 
-    <!-- CATEGORIES -->
-    <div class="bg-panna border-b border-ulivo/5 py-5 overflow-x-auto no-scrollbar sticky top-24 z-50 shadow-sm">
-        <div class="max-w-7xl mx-auto px-6 flex space-x-4">
+    <!-- CATEGORIES (Sticky Top adjusted for Mobile) -->
+    <div class="bg-panna border-b border-ulivo/5 py-3 md:py-5 overflow-x-auto no-scrollbar sticky top-[65px] md:top-[88px] z-[100] shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 md:px-6 flex space-x-3 md:space-x-4">
             <template x-for="cat in categories" :key="cat.id">
                 <button @click="selectedCategory = cat.id; fetchItems()" 
-                        :class="selectedCategory === cat.id ? 'bg-ulivo text-panna shadow-xl' : 'bg-white text-ulivo/60 border-ulivo/5'"
-                        class="px-7 py-4 rounded-[1.8rem] border text-[10px] font-black uppercase tracking-[0.2em] whitespace-nowrap transition flex items-center gap-2">
-                    <i :data-lucide="cat.icon" class="w-4 h-4"></i>
+                        :class="selectedCategory === cat.id ? 'bg-ulivo text-panna shadow-xl scale-105' : 'bg-white text-ulivo/60 border-ulivo/5'"
+                        class="px-5 py-3 md:px-7 md:py-4 rounded-[1.5rem] md:rounded-[1.8rem] border text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] whitespace-nowrap transition flex items-center gap-2">
+                    <i :data-lucide="cat.icon" class="w-3 h-3 md:w-4 md:h-4"></i>
                     <span x-text="cat.label"></span>
                 </button>
             </template>
@@ -81,23 +81,22 @@
     </div>
 
     <!-- MAIN GRID -->
-    <main class="max-w-7xl mx-auto px-6 py-12 min-h-screen">
-        <div x-show="loading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-            <template x-for="i in 8"><div class="aspect-[4/5] skeleton rounded-[3rem]"></div></template>
+    <main class="max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-12 min-h-screen">
+        <div x-show="loading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-10">
+            <template x-for="i in 8"><div class="aspect-[4/5] skeleton rounded-[2.5rem]"></div></template>
         </div>
 
-        <div x-show="!loading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
+        <div x-show="!loading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-10">
             <template x-for="item in items" :key="item.id">
-                <div @click="selectedItem = item" class="group cursor-pointer bg-white rounded-[3rem] overflow-hidden border border-ulivo/5 hover:shadow-2xl transition-all duration-500 animate-card">
+                <div @click="selectedItem = item" class="group cursor-pointer bg-white rounded-[2.5rem] overflow-hidden border border-ulivo/5 hover:shadow-2xl transition-all duration-500 animate-card">
                     <div class="relative aspect-square overflow-hidden bg-ulivo/5">
                         <img :src="item.images[0]" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000" onerror="this.src='https://placehold.co/400x400/FDFBF7/556B2F?text=Ostuni'">
-                        <div class="absolute top-6 right-6 bg-panna/95 backdrop-blur px-4 py-2 rounded-2xl text-sm font-black text-ulivoDark shadow-xl" x-text="'€' + item.price"></div>
+                        <div class="absolute top-4 right-4 md:top-6 md:right-6 bg-panna/95 backdrop-blur px-3 py-1 md:px-4 md:py-2 rounded-xl md:rounded-2xl text-xs md:text-sm font-black text-ulivoDark shadow-xl" x-text="'€' + item.price"></div>
                     </div>
-                    <div class="p-8">
-                        <h3 class="font-serif text-2xl text-ulivoDark mb-2 truncate italic uppercase tracking-tight" x-text="item.title"></h3>
-                        <div class="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-ulivo/40">
-                            <span class="flex items-center"><i data-lucide="map-pin" class="w-3 h-3 mr-1 text-oro"></i> <span x-text="item.location"></span></span>
-                            <span x-text="item.category"></span>
+                    <div class="p-6 md:p-8 text-center">
+                        <h3 class="font-serif text-xl md:text-2xl text-ulivoDark mb-1 truncate italic uppercase tracking-tight" x-text="item.title"></h3>
+                        <div class="flex items-center justify-center text-[9px] md:text-[10px] font-black uppercase tracking-widest text-ulivo/40">
+                            <i data-lucide="map-pin" class="w-3 h-3 mr-1 text-oro"></i> <span x-text="item.location"></span>
                         </div>
                     </div>
                 </div>
@@ -105,30 +104,72 @@
         </div>
     </main>
 
-    <!-- DETTAGLIO (THE TAIL) -->
+    <!-- AUTH MODAL (Google, Email, Web3) -->
+    <div x-show="showAuthModal" x-cloak class="fixed inset-0 z-[350] flex items-center justify-center p-4">
+        <div @click="showAuthModal = false" class="absolute inset-0 bg-ulivoDark/60 backdrop-blur-md"></div>
+        <div class="relative bg-panna w-full max-w-md rounded-[3rem] shadow-2xl p-8 md:p-12 animate-card text-center">
+            <h3 class="font-serif text-3xl italic mb-2 text-ulivoDark">Benvenuto</h3>
+            <p class="text-[10px] font-black uppercase tracking-[0.3em] text-ulivo/40 mb-8">Ostuni Marketplace Auth</p>
+            
+            <div class="space-y-4">
+                <!-- Google -->
+                <button @click="login('google')" class="w-full flex items-center justify-center gap-3 bg-white border border-ulivo/10 p-4 rounded-2xl font-bold hover:shadow-md transition">
+                    <img src="https://www.google.com/favicon.ico" class="w-5 h-5">
+                    <span class="text-xs uppercase tracking-widest">Entra con Google</span>
+                </button>
+                
+                <!-- Web3 Wallet -->
+                <button @click="loginWeb3()" class="w-full flex items-center justify-center gap-3 bg-ulivoDark text-panna p-4 rounded-2xl font-bold hover:bg-black transition shadow-xl">
+                    <i data-lucide="wallet" class="w-5 h-5 text-oro"></i>
+                    <span class="text-xs uppercase tracking-widest">Connect Web3 Wallet</span>
+                </button>
+
+                <div class="flex items-center gap-4 py-2">
+                    <div class="h-px bg-ulivo/10 flex-1"></div>
+                    <span class="text-[8px] font-black text-ulivo/30 uppercase">Oppure</span>
+                    <div class="h-px bg-ulivo/10 flex-1"></div>
+                </div>
+
+                <!-- Email Magic Link -->
+                <div class="relative">
+                    <input type="email" x-model="emailInput" placeholder="La tua email..." class="w-full bg-white border border-ulivo/10 p-4 rounded-2xl outline-none focus:ring-2 ring-ulivo/20 text-sm">
+                    <button @click="loginEmail()" class="absolute right-2 top-2 bottom-2 bg-ulivo text-panna px-4 rounded-xl text-[9px] font-black uppercase tracking-widest">Invia link</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- THE TAIL (DETTAGLI) -->
     <div x-show="selectedItem" x-cloak class="fixed inset-0 z-[200] flex justify-end">
-        <div @click="selectedItem = null" class="absolute inset-0 bg-ulivoDark/40 backdrop-blur-sm"></div>
+        <div @click="selectedItem = null" class="absolute inset-0 bg-ulivoDark/30 backdrop-blur-sm"></div>
         <div x-show="selectedItem" x-transition:enter="transition transform duration-500 ease-in-out" x-transition:enter-start="translate-x-full" 
              class="relative w-full max-w-xl bg-panna h-full shadow-2xl flex flex-col tail-shadow overflow-y-auto no-scrollbar">
             
-            <div class="p-8 flex justify-between items-center bg-white sticky top-0 z-10 border-b border-ulivo/5">
-                <button @click="selectedItem = null" class="p-3 bg-panna rounded-2xl transition"><i data-lucide="arrow-left"></i></button>
-                <h2 class="font-serif italic text-ulivoDark">Scheda Annuncio</h2>
+            <div class="p-6 md:p-8 flex justify-between items-center bg-white sticky top-0 z-10 border-b border-ulivo/5">
+                <button @click="selectedItem = null" class="p-3 bg-panna rounded-2xl hover:bg-ulivo/5 transition"><i data-lucide="arrow-left"></i></button>
+                <div class="text-center leading-none">
+                    <p class="text-[8px] font-black uppercase tracking-[0.4em] text-ulivo/40 mb-1">Dettaglio</p>
+                    <p class="font-serif italic text-ulivoDark" x-text="selectedItem?.category"></p>
+                </div>
                 <template x-if="selectedItem?.user_id === user?.id">
                     <button @click="deleteItem(selectedItem.id)" class="p-3 bg-red-50 text-red-500 rounded-2xl"><i data-lucide="trash-2"></i></button>
                 </template>
                 <div x-show="selectedItem?.user_id !== user?.id" class="w-12"></div>
             </div>
 
-            <div class="p-10">
-                <img :src="selectedItem?.images[0]" class="w-full aspect-video object-cover rounded-[2.5rem] mb-10 shadow-xl">
-                <div class="flex items-start justify-between mb-8">
-                    <h2 class="font-serif text-5xl italic text-ulivoDark leading-tight" x-text="selectedItem?.title"></h2>
-                    <p class="text-4xl font-bold text-oro" x-text="'€' + selectedItem?.price"></p>
-                </div>
-                <p class="text-ulivoDark/70 leading-relaxed font-light text-xl mb-12" x-text="selectedItem?.description"></p>
+            <div class="p-8 md:p-10">
+                <img :src="selectedItem?.images[0]" class="w-full aspect-video object-cover rounded-[2.5rem] mb-10 shadow-2xl">
                 
-                <button @click="contactWhatsApp(selectedItem)" class="w-full bg-[#25D366] text-white py-7 rounded-[2.5rem] font-black tracking-[0.2em] shadow-2xl hover:scale-105 transition-all flex items-center justify-center gap-4 text-sm">
+                <div class="flex items-start justify-between mb-8">
+                    <h2 class="font-serif text-4xl md:text-5xl italic text-ulivoDark leading-tight" x-text="selectedItem?.title"></h2>
+                    <p class="text-3xl md:text-4xl font-bold text-oro" x-text="'€' + selectedItem?.price"></p>
+                </div>
+
+                <div class="bg-white p-6 md:p-8 rounded-[2.5rem] border border-ulivo/5 shadow-sm mb-10">
+                    <p class="text-ulivoDark/80 leading-relaxed font-light text-lg" x-text="selectedItem?.description"></p>
+                </div>
+                
+                <button @click="contactWhatsApp(selectedItem)" class="w-full bg-[#25D366] text-white py-6 md:py-7 rounded-[2rem] font-black tracking-[0.2em] shadow-2xl hover:scale-105 transition-all flex items-center justify-center gap-4 text-xs md:text-sm">
                     <i data-lucide="message-circle" class="w-6 h-6"></i>
                     CONTATTA SU WHATSAPP
                 </button>
@@ -136,25 +177,25 @@
         </div>
     </div>
 
-    <!-- CREAZIONE ANNUNCIO -->
-    <div x-show="isCreating" x-cloak class="fixed inset-0 z-[250] flex items-center justify-center p-6">
+    <!-- MODAL CREAZIONE -->
+    <div x-show="isCreating" x-cloak class="fixed inset-0 z-[300] flex items-center justify-center p-4">
         <div @click="isCreating = false" class="absolute inset-0 bg-ulivoDark/60 backdrop-blur-md"></div>
-        <div class="relative bg-panna w-full max-w-xl rounded-[4rem] shadow-2xl p-12 overflow-hidden animate-card">
-            <h3 class="font-serif text-4xl mb-10 italic text-center text-ulivo">Pubblica Annuncio</h3>
-            <div class="space-y-5">
-                <input type="text" x-model="newPost.title" placeholder="Cosa vendi?" class="w-full bg-white border border-ulivo/5 p-6 rounded-3xl outline-none shadow-inner">
+        <div class="relative bg-panna w-full max-w-xl rounded-[4rem] shadow-2xl p-10 md:p-12 animate-card">
+            <h3 class="font-serif text-4xl mb-8 italic text-center text-ulivo">Nuovo Annuncio</h3>
+            <div class="space-y-4">
+                <input type="text" x-model="newPost.title" placeholder="Cosa proponi?" class="w-full bg-white border border-ulivo/5 p-5 md:p-6 rounded-3xl outline-none shadow-inner">
                 <div class="grid grid-cols-2 gap-4">
-                    <input type="number" x-model="newPost.price" placeholder="Prezzo €" class="w-full bg-white border border-ulivo/5 p-6 rounded-3xl outline-none shadow-inner">
-                    <select x-model="newPost.category" class="w-full bg-white border border-ulivo/5 p-6 rounded-3xl text-[10px] font-bold uppercase tracking-widest outline-none shadow-inner">
+                    <input type="number" x-model="newPost.price" placeholder="Prezzo €" class="w-full bg-white border border-ulivo/5 p-5 md:p-6 rounded-3xl outline-none shadow-inner">
+                    <select x-model="newPost.category" class="w-full bg-white border border-ulivo/5 p-5 md:p-6 rounded-3xl text-[10px] font-bold uppercase tracking-widest outline-none">
                         <template x-for="cat in categories.filter(c => c.id !== 'tutti')" :key="cat.id">
                             <option :value="cat.id" x-text="cat.label"></option>
                         </template>
                     </select>
                 </div>
-                <input type="tel" x-model="newPost.phone" placeholder="WhatsApp (es. 39333...)" class="w-full bg-white border border-oro/30 p-6 rounded-3xl outline-none font-bold text-ulivo shadow-inner">
-                <textarea x-model="newPost.description" placeholder="Descrizione dell'annuncio..." class="w-full bg-white border border-ulivo/5 p-6 rounded-[2.5rem] h-32 outline-none shadow-inner resize-none"></textarea>
-                <button @click="createListing()" :disabled="isLoading" class="w-full bg-ulivoDark text-panna py-7 rounded-[2.5rem] font-black tracking-[0.2em] shadow-2xl hover:bg-ulivo transition-all active:scale-95 disabled:opacity-50">
-                    <span x-text="isLoading ? 'Invio...' : 'PUBBLICA ORA'"></span>
+                <input type="tel" x-model="newPost.phone" placeholder="WhatsApp (es. 39333...)" class="w-full bg-white border border-oro/30 p-5 md:p-6 rounded-3xl outline-none font-bold text-ulivo">
+                <textarea x-model="newPost.description" placeholder="Dettagli dell'annuncio..." class="w-full bg-white border border-ulivo/5 p-5 md:p-6 rounded-[2rem] h-32 outline-none shadow-inner resize-none"></textarea>
+                <button @click="createListing()" :disabled="isLoading" class="w-full bg-ulivoDark text-panna py-6 md:py-7 rounded-[2rem] font-black tracking-[0.2em] shadow-2xl hover:bg-ulivo transition-all disabled:opacity-50">
+                    <span x-text="isLoading ? 'Caricamento...' : 'PUBBLICA ORA'"></span>
                 </button>
             </div>
         </div>
@@ -162,9 +203,10 @@
 
     <script>
         const { createClient } = supabase;
-        // Iniezione sicura via GitHub Actions
+        // Iniezione automatica tramite GitHub Actions
         const URL_DB = __SUPABASE_URL_INJECT__;
         const KEY_DB = __SUPABASE_KEY_INJECT__;
+
         const _supabase = createClient(URL_DB || '', KEY_DB || '');
 
         document.addEventListener('alpine:init', () => {
@@ -176,43 +218,50 @@
                 selectedItem: null,
                 selectedCategory: 'tutti',
                 isCreating: false,
+                showAuthModal: false,
+                showProfile: false,
+                emailInput: '',
                 toast: { show: false, message: '', type: 'success' },
                 newPost: { title: '', price: '', category: 'vendo', description: '', phone: '', location: 'Ostuni' },
                 
+                // ORDINE CATEGORIE: Vendo e Compro per primi
                 categories: [
                     { id: 'tutti', label: 'Tutti', icon: 'map' },
-                    { id: 'motori', label: 'Motori', icon: 'bike' },
                     { id: 'vendo', label: 'Vendo', icon: 'shopping-bag' },
                     { id: 'compro', label: 'Compro', icon: 'search' },
+                    { id: 'motori', label: 'Motori', icon: 'bike' },
                     { id: 'aiuto', label: 'Aiuto', icon: 'heart-handshake' },
                     { id: 'professioni', label: 'Professionisti', icon: 'award' }
                 ],
 
-                // 10 ANNUNCI DEMO PROFESSIONALI
                 demoItems: [
-                    { id: 'd1', title: 'Vespa 50 Special', price: 3400, category: 'motori', location: 'Centro Storico', phone: '39333000000', description: 'Restauro totale 2023, motore originale.', images: ['https://images.unsplash.com/photo-1594149929911-78975a43d4f5?auto=format&fit=crop&w=800'] },
-                    { id: 'd2', title: 'Olio Evo Valle d\'Itria', price: 15, category: 'vendo', location: 'Contrada Galante', phone: '39333000000', description: 'Olio estratto a freddo, produzione locale 2024.', images: ['https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=800'] },
-                    { id: 'd3', title: 'Tour Ape Calessino', price: 50, category: 'aiuto', location: 'Piazza Libertà', phone: '39333000000', description: 'Tour fotografico tra i vicoli bianchi di Ostuni.', images: ['https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800'] },
-                    { id: 'd4', title: 'Lezioni Orecchiette', price: 40, category: 'professioni', location: 'Masseria', phone: '39333000000', description: 'Impara l\'arte delle orecchiette fatte a mano.', images: ['https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=800'] },
-                    { id: 'd5', title: 'Pumo in Ceramica', price: 30, category: 'vendo', location: 'Via Cattedrale', phone: '39333000000', description: 'Artigianato locale fatto a mano.', images: ['https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=800'] },
-                    { id: 'd6', title: 'Bici Vintage Olmo', price: 200, category: 'motori', location: 'Villanova', phone: '39333000000', description: 'Bici da corsa d\'epoca, ottime condizioni.', images: ['https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=800'] },
-                    { id: 'd7', title: 'Cerco Trullo Mare', price: 900, category: 'compro', location: 'Città', phone: '39333000000', description: 'Cerco trullo in affitto per stagione estiva.', images: ['https://images.unsplash.com/photo-1590424600100-368739674f1d?auto=format&fit=crop&w=800'] },
-                    { id: 'd8', title: 'Potatura Ulivi', price: 25, category: 'professioni', location: 'Campagna', phone: '39333000000', description: 'Esperto potatore ulivi secolari Valle d\'Itria.', images: ['https://images.unsplash.com/photo-1592419044706-39796d40f98c?auto=format&fit=crop&w=800'] },
-                    { id: 'd9', title: 'Tavolo Legno Ulivo', price: 500, category: 'vendo', location: 'Artigianale', phone: '39333000000', description: 'Tavolo fatto a mano con legno d\'ulivo locale.', images: ['https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&w=800'] },
-                    { id: 'd10', title: 'Aiuto Traslochi', price: 20, category: 'aiuto', location: 'Centro', phone: '39333000000', description: 'Disponibile per piccoli trasporti e facchinaggio.', images: ['https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=800'] }
+                    { id: 'd1', title: 'Vespa 50 Special Panna', price: 3400, category: 'motori', location: 'Centro Storico', phone: '39333000000', description: 'Restauro totale 2023, motore originale, colore panna Ostuni.', images: ['https://images.unsplash.com/photo-1594149929911-78975a43d4f5?auto=format&fit=crop&w=800'] },
+                    { id: 'd2', title: 'Olio Evo Valle d\'Itria', price: 15, category: 'vendo', location: 'Contrada Galante', phone: '39333000000', description: 'Olio 2024 estratto a freddo da ulivi secolari.', images: ['https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=800'] },
+                    { id: 'd3', title: 'Pumo in Ceramica', price: 30, category: 'vendo', location: 'Boutique', phone: '39333000000', description: 'Simbolo porta fortuna pugliese fatto a mano.', images: ['https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=800'] },
+                    { id: 'd4', title: 'Lezioni di Orecchiette', price: 50, category: 'professioni', location: 'Trullo', phone: '39333000000', description: 'Esperienza autentica in cucina pugliese.', images: ['https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=800'] },
+                    { id: 'd5', title: 'Cerco Terreno Vista Mare', price: 50000, category: 'compro', location: 'Ostuni', phone: '39333000000', description: 'Cerco piccolo terreno con uliveto e vista mare.', images: ['https://images.unsplash.com/photo-1590424600100-368739674f1d?auto=format&fit=crop&w=800'] },
+                    { id: 'd6', title: 'Potatore Ulivi', price: 25, category: 'professioni', location: 'Valle d\'Itria', phone: '39333000000', description: 'Esperto potatore ulivi secolari disponibile.', images: ['https://images.unsplash.com/photo-1592419044706-39796d40f98c?auto=format&fit=crop&w=800'] },
+                    { id: 'd7', title: 'Bici Vintage Olmo', price: 200, category: 'motori', location: 'Villanova', phone: '39333000000', description: 'Bicicletta d\'epoca in ottime condizioni.', images: ['https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=800'] },
+                    { id: 'd8', title: 'Tavolo Legno Ulivo', price: 400, category: 'vendo', location: 'Ostuni', phone: '39333000000', description: 'Artigianato locale in legno d\'ulivo massiccio.', images: ['https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&w=800'] },
+                    { id: 'd9', title: 'Aiuto Trasloco', price: 20, category: 'aiuto', location: 'Centro', phone: '39333000000', description: 'Aiuto per piccoli trasporti e traslochi locali.', images: ['https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=800'] },
+                    { id: 'd10', title: 'Ape Calessino Tour', price: 40, category: 'aiuto', location: 'Piazza Libertà', phone: '39333000000', description: 'Giro panoramico tra i vicoli della città bianca.', images: ['https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800'] }
                 ],
 
                 async init() {
-                    console.log("App Init...");
-                    this.setupAuth();
-                    await this.fetchItems();
-                },
+                    // Recupero sessione esistente (importante per redirect GitHub Pages)
+                    const { data: { session } } = await _supabase.auth.getSession();
+                    this.user = session?.user || null;
 
-                setupAuth() {
+                    // Ascolto cambiamenti auth
                     _supabase.auth.onAuthStateChange((event, session) => {
                         this.user = session?.user || null;
-                        if (event === 'SIGNED_IN') this.showToast("Accesso effettuato!");
+                        if (event === 'SIGNED_IN') {
+                            this.showAuthModal = false;
+                            this.showToast("Accesso effettuato!");
+                        }
                     });
+
+                    await this.fetchItems();
                 },
 
                 async fetchItems() {
@@ -229,29 +278,59 @@
                 },
 
                 async createListing() {
-                    if (!this.user) return this.showToast("Accedi per pubblicare", "error");
+                    if (!this.user) return this.showAuthModal = true;
                     this.isLoading = true;
-                    const { error } = await _supabase.from('listings').insert([{ ...this.newPost, user_id: this.user.id, images: ['https://placehold.co/600x400/556B2F/FDFBF7?text=Ostuni+Marketplace'] }]);
+                    const { error } = await _supabase.from('listings').insert([{ 
+                        ...this.newPost, 
+                        user_id: this.user.id, 
+                        images: ['https://placehold.co/600x400/556B2F/FDFBF7?text=Ostuni+Marketplace'] 
+                    }]);
                     this.isLoading = false;
-                    if (!error) { this.isCreating = false; this.showToast("Annuncio pubblicato!"); await this.fetchItems(); }
-                    else { this.showToast("Errore!", "error"); }
+                    if (!error) {
+                        this.isCreating = false;
+                        this.showToast("Annuncio pubblicato!");
+                        this.fetchItems();
+                    } else { this.showToast("Errore!", "error"); }
+                },
+
+                // AUTH STRATEGIES
+                async login(provider) {
+                    const redirectUrl = window.location.origin + window.location.pathname;
+                    await _supabase.auth.signInWithOAuth({
+                        provider,
+                        options: { redirectTo: redirectUrl }
+                    });
+                },
+
+                async loginEmail() {
+                    if (!this.emailInput) return this.showToast("Inserisci un'email", "error");
+                    const { error } = await _supabase.auth.signInWithOtp({
+                        email: this.emailInput,
+                        options: { emailRedirectTo: window.location.origin + window.location.pathname }
+                    });
+                    if (!error) this.showToast("Link inviato! Controlla l'email.");
+                    else this.showToast(error.message, "error");
+                },
+
+                async loginWeb3() {
+                    // Questo presuppone l'integrazione di un provider Web3 in Supabase
+                    // o una funzione Edge personalizzata. In questa UI simuliamo il trigger.
+                    this.showToast("Connessione Web3 Wallet in corso...");
+                    // Esempio logica: await window.ethereum.request({ method: 'eth_requestAccounts' });
+                },
+
+                async logout() {
+                    await _supabase.auth.signOut();
+                    this.user = null;
+                    this.showProfile = false;
+                    location.reload();
                 },
 
                 contactWhatsApp(item) {
-                    const msg = encodeURIComponent(`Ciao! Sono interessato a "${item.title}" su Ostuni Marketplace.`);
+                    const msg = encodeURIComponent(`Ciao! Ho visto il tuo annuncio "${item.title}" su Ostuni Marketplace.`);
                     window.open(`https://wa.me/${item.phone}?text=${msg}`, '_blank');
                 },
 
-                async login() {
-                    const siteUrl = 'https://studiosemerano.github.io/OstuniMarketplace/';
-                    const { error } = await _supabase.auth.signInWithOAuth({
-                        provider: 'google',
-                        options: { redirectTo: siteUrl }
-                    });
-                    if (error) this.showToast("Errore Login: " + error.message, "error");
-                },
-
-                async logout() { await _supabase.auth.signOut(); this.user = null; location.reload(); },
                 resetView() { this.selectedCategory = 'tutti'; this.selectedItem = null; this.fetchItems(); },
                 showToast(msg, type = 'success') { this.toast = { show: true, message: msg, type }; setTimeout(() => this.toast.show = false, 3000); }
             }));
