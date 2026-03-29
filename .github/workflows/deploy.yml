@@ -20,7 +20,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Iniezione Chiavi Supabase (JSON Safe)
+      - name: Iniezione Chiavi Supabase
         env:
           URL: ${{ secrets.SUPABASE_URL }}
           KEY: ${{ secrets.SUPABASE_KEY }}
@@ -29,10 +29,8 @@ jobs:
           import os, json
           with open('index.html', 'r') as f:
               content = f.read()
-          # Prepariamo le stringhe sicure per JS
           url_js = json.dumps(os.environ.get('URL', ''))
           key_js = json.dumps(os.environ.get('KEY', ''))
-          # Sostituiamo i placeholder senza virgolette (le mette json.dumps)
           content = content.replace('__SUPABASE_URL_INJECT__', url_js)
           content = content.replace('__SUPABASE_KEY_INJECT__', key_js)
           with open('index.html', 'w') as f:
